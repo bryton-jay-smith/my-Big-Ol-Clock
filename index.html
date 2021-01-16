@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Big Ol' Clock</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: rgb(10, 10, 1);
+    }
+
+    #contain {
+      height:100vh;
+      width:100vw;
+    }
+
+    #menu {
+      position: absolute;
+      top: 5vh;
+      right: 2.5vw;
+      font-size: 5vh;
+    }
+
+    .super {
+      vertical-align: top;
+      font-size:;
+    }
+
+/* Default Style */
+    .default {
+      color: #AAAAAA;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: min-content;
+      margin-left: auto;
+      margin-right: auto;
+      height: min-content;
+      padding-top: 25vh;
+    }
+
+    .hidden {
+      display: none;
+    }
+*/
+  </style>
+</head>
+<body onLoad="Init()">
+  <span id="menu"> 
+    <svg width="4vw" height="4vh" viewbox="0 0 10 10" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"> <defs> <path d="M0 0L10 0L10 10L0 10L0 0Z" id="path_1" /> <clipPath id="mask_1"> <use xlink:href="#path_1" /> </clipPath> </defs> <g id="Menu-Vertical-icon"> <path d="M0 0L10 0L10 10L0 10L0 0Z" id="Background" fill="none" fill-rule="evenodd" stroke="none" /> <g clip-path="url(#mask_1)"> <path d="M1 0C0.449219 0 0 0.449219 0 1C0 1.55078 0.449219 2 1 2C1.55078 2 2 1.55078 2 1C2 0.449219 1.55078 0 1 0L1 0ZM1 4C0.449219 4 0 4.44922 0 5C0 5.55078 0.449219 6 1 6C1.55078 6 2 5.55078 2 5C2 4.44922 1.55078 4 1 4L1 4ZM1 8C0.449219 8 0 8.44922 0 9C0 9.55078 0.449219 10 1 10C1.55078 10 2 9.55078 2 9C2 8.44922 1.55078 8 1 8L1 8Z" transform="translate(4 0)" id="Shape" fill="#777777" fill-rule="evenodd" stroke="none" /> </g> </g> </svg>
+  </span>
+  <span id="app"></span>
+
+  <script>
+    Init = () => {
+      Refresh = props => {      
+        //Dynamic font Size Calculations
+        HeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/5)
+        SubHeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/25)
+        SuperScriptSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/45)
+        SuperScriptSizeAlt = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/15)
+        HeaderSize = `${HeaderSize}px` 
+        SubHeaderSize = `${SubHeaderSize}px`
+        SuperScriptSize = `${SuperScriptSize}px`
+        SuperScriptSizeAlt = `${SuperScriptSizeAlt}px`
+        // Get Current DateTime
+        Current = new Date()
+        Seconds = Current.getSeconds()
+        Minutes = Current.getMinutes()
+        Hours = Current.getHours()
+        //Assign Months
+        Month = Current.getMonth()
+        Month === 0 ? Month = `January` : null
+        Month === 1 ? Month = `February` : null
+        Month === 0 ? Month = `March` : null
+        Month === 0 ? Month = `April` : null
+        Month === 0 ? Month = `May` : null
+        Month === 0 ? Month = `June` : null
+        Month === 0 ? Month = `July` : null
+        Month === 0 ? Month = `August` : null
+        Month === 0 ? Month = `September` : null
+        Month === 0 ? Month = `October` : null
+        Month === 0 ? Month = `November` : null
+        Month === 0 ? Month = `December` : null
+        //Assign Date SubText
+        FullDate = Current.getDate()
+        if (FullDate === 1 | FullDate === 21 | FullDate === 31 ) {
+          FullDate = `${FullDate}<span class="super" style="font-size:${SuperScriptSize}">st</span>`
+        }else if (FullDate === 2 | FullDate === 22 ) {
+          FullDate = `${FullDate}<span class="super" style="font-size:${SuperScriptSize}">nd</span>`
+        } else if (FullDate === 3 | FullDate === 23 ) {
+          FullDate = `${FullDate}<span class="super" style="font-size:${SuperScriptSize}">rd</span>`
+        } else {
+          FullDate = `${FullDate}<span class="super" style="font-size:${SuperScriptSize}">th</span>`
+        }
+        FullDate = `${FullDate}`
+        //Assign Day
+        Day = Current.getDay()
+        Day === 0 ? Day = 'Sunday' : null 
+        Day === 1 ? Day = 'Monday' : null 
+        Day === 2 ? Day = 'Tuesday' : null 
+        Day === 3 ? Day = 'Wednesday' : null 
+        Day === 4 ? Day = 'Thursday' : null 
+        Day === 5 ? Day = 'Friday' : null 
+        Day === 6 ? Day = 'Saturday' : null 
+        //convert time to am/pm
+        AmPm = 'pm'
+        if (Hours > 12) {
+          Hours = `${Hours - 12}`
+          AmPm = 'am'
+        } else { 
+          Hours = `${Hours}`
+        }
+        //Add placeholder 0 to time
+        Hours < 10 ? Hours = `0${Hours}` : Hours = Hours
+        Minutes < 10 ? Minutes = `0${Minutes}` : Minutes = Minutes
+        Seconds < 10 ? Seconds = `0${Seconds}` : Seconds = Seconds
+        //wrap in ID
+        Hours = `<span id="Hour">${Hours}</span>`
+        Minutes = `<span id="Min">${Minutes}</span>`
+        Seconds = `<span id="Sec">${Seconds}</span>`
+        Day = `<span id="Day">${Day}</span>`
+        //Themes
+        BaseTime = 
+          `<div class="default">
+            <div id="Calender" style="font-size:${SubHeaderSize};color:#666666">
+                ${Day}, ${Month} ${FullDate}
+            </div>
+            <div style="color:#444444"></div>
+            <div id="Clock" style="line-height:0.75;font-size:${HeaderSize}">
+              ${Hours}<span id="Colon">:</span>${Minutes}<span style="font-size:${SuperScriptSizeAlt};vertical-align:top;color:#777777">${Seconds}</span>
+            </div>
+          </div>`
+        FontTime = `<div class="fonty">${Hours}${Minutes}${Seconds}</div>`
+        CodeTime = `<div class="default">${Hours}${Minutes}${Seconds}</div>`
+        // Pass object into container
+        document.getElementById("app").innerHTML = `<div id="contain">${BaseTime}</div>`
+      }
+      //Start Clock Loop
+      Refresh()
+      setInterval(() => {Refresh()}, 1000)
+      //Watch for window size changes
+      window.innerHeight.onChange = Refresh()
+      window.innerWidth.onChange = Refresh()
+  }
+  </script>
+</body>
+</html>

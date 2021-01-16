@@ -6,12 +6,7 @@
     body {
       margin: 0;
       padding: 0;
-      background-color: rgb(10, 10, 1);
-    }
-
-    #contain {
-      height:100vh;
-      width:100vw;
+      background-color: rgb(20, 20, 22.5);
     }
 
     #menu {
@@ -23,22 +18,20 @@
 
     .super {
       vertical-align: top;
-      font-size:;
     }
 
 /* Default Style */
     .default {
       color: #AAAAAA;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      width: min-content;
       margin-left: auto;
       margin-right: auto;
-      height: min-content;
       padding-top: 25vh;
+      line-height: 0.9;
     }
 
-    .hidden {
-      display: none;
+    i {
+      font-style: normal;
     }
 */
   </style>
@@ -52,15 +45,20 @@
   <script>
     Init = () => {
       Refresh = props => {      
+
+        Scaling = 0.75
         //Dynamic font Size Calculations
-        HeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/5)
-        SubHeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/25)
-        SuperScriptSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/45)
-        SuperScriptSizeAlt = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/15)
+        HeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/(6)) * Scaling
+        SubHeaderSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/(28))* Scaling
+        SuperScriptSize = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/(50))* Scaling
+        SuperScriptSizeAlt = Math.round(Math.sqrt((window.innerHeight*window.innerHeight) + (window.innerWidth*window.innerWidth))/(18))* Scaling
         HeaderSize = `${HeaderSize}px` 
         SubHeaderSize = `${SubHeaderSize}px`
         SuperScriptSize = `${SuperScriptSize}px`
         SuperScriptSizeAlt = `${SuperScriptSizeAlt}px`
+        ScreenWidth = Math.round(window.innerWidth)
+        ClockWidth = `${(ScreenWidth - ( ScreenWidth / 2))*Scaling}px`
+        console.log(ClockWidth)
         // Get Current DateTime
         Current = new Date()
         Seconds = Current.getSeconds()
@@ -109,24 +107,25 @@
         } else { 
           Hours = `${Hours}`
         }
+        Hours == 00 ? Hours = 12 : null
+
         //Add placeholder 0 to time
-        Hours < 10 ? Hours = `0${Hours}` : Hours = Hours
-        Minutes < 10 ? Minutes = `0${Minutes}` : Minutes = Minutes
-        Seconds < 10 ? Seconds = `0${Seconds}` : Seconds = Seconds
+        Hours < 10 ? Hours = `0${Hours}` : null
+        Minutes < 10 ? Minutes = `0${Minutes}` : null
+        Seconds < 10 ? Seconds = `0${Seconds}` : null
         //wrap in ID
-        Hours = `<span id="Hour">${Hours}</span>`
-        Minutes = `<span id="Min">${Minutes}</span>`
-        Seconds = `<span id="Sec">${Seconds}</span>`
-        Day = `<span id="Day">${Day}</span>`
+        //Hours = `<span id="Hour">${Hours}</span>`
+        //Minutes = `<span id="Min">${Minutes}</span>`
+       // Seconds = `<span id="Sec">${Seconds}</span>`
+       // Day = `<span id="Day">${Day}</span>`
         //Themes
         BaseTime = 
-          `<div class="default">
+          `<div class="default" style="width:${ClockWidth};margin-left:auto;margin-right:auto;">
             <div id="Calender" style="font-size:${SubHeaderSize};color:#666666">
                 ${Day}, ${Month} ${FullDate}
             </div>
-            <div style="color:#444444"></div>
-            <div id="Clock" style="line-height:0.75;font-size:${HeaderSize}">
-              ${Hours}<span id="Colon">:</span>${Minutes}<span style="font-size:${SuperScriptSizeAlt};vertical-align:top;color:#777777">${Seconds}</span>
+            <div id="Clock" style="font-size:${HeaderSize};">
+              ${Hours}:${Minutes}<i style="font-size:${SuperScriptSizeAlt}">${AmPm}</i>
             </div>
           </div>`
         FontTime = `<div class="fonty">${Hours}${Minutes}${Seconds}</div>`
